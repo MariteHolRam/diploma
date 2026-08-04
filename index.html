@@ -7,9 +7,21 @@
     <!-- Google Fonts for Premium Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     
     <style>
+        /* CSS Variables for Dynamic Customization */
+        :root {
+            --font-scale: 1.0;
+            --font-size-name: 26pt;
+            --primary-blue: #004c99;
+            --accent-gold: #c5a059;
+            --font-family-title: 'Cinzel', serif;
+            --font-family-body: 'EB Garamond', serif;
+            --font-family-sans: 'Montserrat', sans-serif;
+            --border-width: 4px;
+        }
+
         /* General Reset */
         * {
             box-sizing: border-box;
@@ -37,7 +49,7 @@
 
             /* Sidebar Control Panel */
             .sidebar {
-                width: 400px;
+                width: 410px;
                 background-color: #1c2541;
                 display: flex;
                 flex-direction: column;
@@ -48,9 +60,8 @@
             }
 
             .sidebar-header {
-                padding: 20px;
+                padding: 18px 20px;
                 background-color: #0b132b;
-                border-bottom: 1px solid #3a506b;
             }
 
             .sidebar-header h2 {
@@ -67,27 +78,87 @@
                 color: #a5b1c2;
             }
 
-            .sidebar-content {
+            /* Sidebar Navigation Tabs */
+            .sidebar-tabs {
+                display: flex;
+                background-color: #0f172a;
+                border-bottom: 1px solid #3a506b;
+            }
+
+            .tab-btn {
+                flex: 1;
+                background: none;
+                border: none;
+                color: #8fa0b5;
+                padding: 12px 10px;
+                font-family: 'Montserrat', sans-serif;
+                font-weight: 700;
+                cursor: pointer;
+                text-transform: uppercase;
+                font-size: 8.5pt;
+                letter-spacing: 1px;
+                transition: color 0.2s, border-bottom 0.2s;
+                text-align: center;
+            }
+
+            .tab-btn.active {
+                color: #5bc0be;
+                border-bottom: 3px solid #5bc0be;
+            }
+
+            /* Tab Panels */
+            .tab-content {
+                display: none;
                 flex: 1;
                 overflow-y: auto;
                 padding: 20px;
             }
 
+            .tab-content.active {
+                display: block;
+            }
+
+            .section-divider {
+                font-size: 9pt;
+                font-weight: 700;
+                text-transform: uppercase;
+                color: #5bc0be;
+                letter-spacing: 1px;
+                border-bottom: 1px solid #3a506b;
+                padding-bottom: 6px;
+                margin-top: 15px;
+                margin-bottom: 15px;
+            }
+
             .form-group {
-                margin-bottom: 18px;
+                margin-bottom: 16px;
+            }
+
+            .form-group.row {
+                display: flex;
+                gap: 10px;
+            }
+
+            .form-group.row > div {
+                flex: 1;
             }
 
             .form-group label {
                 display: block;
-                font-size: 8.5pt;
+                font-size: 8.2pt;
                 font-weight: 600;
-                color: #5bc0be;
+                color: #a5b1c2;
                 text-transform: uppercase;
                 letter-spacing: 0.5px;
                 margin-bottom: 6px;
             }
 
-            .form-group input, .form-group textarea {
+            .form-group label span {
+                float: right;
+                color: #5bc0be;
+            }
+
+            .form-group input, .form-group textarea, .form-group select {
                 width: 100%;
                 background-color: #0b132b;
                 border: 1px solid #3a506b;
@@ -95,11 +166,43 @@
                 padding: 10px;
                 color: #ffffff;
                 font-family: 'Montserrat', sans-serif;
-                font-size: 9pt;
+                font-size: 9.2pt;
                 transition: border-color 0.2s;
             }
 
-            .form-group input:focus, .form-group textarea:focus {
+            .form-group select {
+                cursor: pointer;
+                appearance: none;
+                background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+                background-repeat: no-repeat;
+                background-position: right 8px center;
+                background-size: 18px;
+                padding-right: 30px;
+            }
+
+            .form-group input[type="range"] {
+                padding: 0;
+                height: 6px;
+                background: #3a506b;
+                border: none;
+                cursor: pointer;
+            }
+
+            .form-group input[type="checkbox"] {
+                width: auto;
+                margin-right: 8px;
+                cursor: pointer;
+            }
+
+            .checkbox-label {
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                font-size: 9pt;
+                color: #ffffff;
+            }
+
+            .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
                 border-color: #5bc0be;
                 outline: none;
             }
@@ -110,7 +213,7 @@
             }
 
             .sidebar-footer {
-                padding: 20px;
+                padding: 18px 20px;
                 background-color: #0b132b;
                 border-top: 1px solid #3a506b;
                 display: flex;
@@ -144,10 +247,10 @@
             }
 
             .print-tips {
-                background-color: rgba(91, 192, 190, 0.1);
-                border: 1px solid rgba(91, 192, 190, 0.3);
+                background-color: rgba(91, 192, 190, 0.08);
+                border: 1px solid rgba(91, 192, 190, 0.25);
                 border-radius: 4px;
-                padding: 12px;
+                padding: 10px;
                 font-size: 8pt;
                 color: #a5b1c2;
                 line-height: 1.4;
@@ -188,7 +291,7 @@
 
         /* Physical Certificate Typography & Layout (Unified Screen & Print) */
         .certificate-page {
-            font-family: 'EB Garamond', 'Times New Roman', serif;
+            font-family: var(--font-family-body);
             color: #1a1a1a;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
@@ -216,7 +319,7 @@
             left: 0.4in;
             right: 0.4in;
             bottom: 0.4in;
-            border: 2px solid #c5a059; /* Outer Gold */
+            border: 2px solid var(--accent-gold); /* Outer Gold */
             z-index: 2;
             pointer-events: none;
         }
@@ -227,7 +330,7 @@
             left: 6px;
             right: 6px;
             bottom: 6px;
-            border: 4px solid #004c99; /* AMD Royal Blue */
+            border: var(--border-width) solid var(--primary-blue); /* AMD Royal Blue / Theme Main */
             pointer-events: none;
         }
 
@@ -237,7 +340,7 @@
             left: 14px;
             right: 14px;
             bottom: 14px;
-            border: 1px solid #c5a059; /* Inner thin gold line */
+            border: 1px solid var(--accent-gold); /* Inner thin gold line */
             pointer-events: none;
         }
 
@@ -246,7 +349,7 @@
             position: absolute;
             width: 45px;
             height: 45px;
-            fill: #c5a059;
+            fill: var(--accent-gold);
             z-index: 3;
         }
 
@@ -320,10 +423,10 @@
         }
 
         .institution-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 8.5pt;
+            font-family: var(--font-family-sans);
+            font-size: calc(8.5pt * var(--font-scale));
             font-weight: 700;
-            color: #004c99;
+            color: var(--primary-blue);
             letter-spacing: 2px;
             margin-top: 0.1in;
             margin-bottom: 0.15in;
@@ -335,7 +438,7 @@
         .header-divider {
             width: 60%;
             height: 1px;
-            background: linear-gradient(to right, transparent, #c5a059, transparent);
+            background: linear-gradient(to right, transparent, var(--accent-gold), transparent);
             margin-bottom: 0.2in;
         }
 
@@ -345,28 +448,28 @@
         }
 
         .badge-line1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 9.5pt;
+            font-family: var(--font-family-sans);
+            font-size: calc(9.5pt * var(--font-scale));
             font-weight: 600;
-            color: #c5a059;
+            color: var(--accent-gold);
             letter-spacing: 3px;
             text-transform: uppercase;
             margin-bottom: 0.04in;
         }
 
         .badge-line2 {
-            font-family: 'Cinzel', serif;
-            font-size: 22pt;
+            font-family: var(--font-family-title);
+            font-size: calc(22pt * var(--font-scale));
             font-weight: 800;
-            color: #004c99;
+            color: var(--primary-blue);
             letter-spacing: 2.5px;
             text-shadow: 1px 1px 1px rgba(0, 76, 153, 0.1);
         }
 
         /* Acknowledgement Text */
         .ack-intro {
-            font-family: 'EB Garamond', serif;
-            font-size: 13.5pt;
+            font-family: var(--font-family-body);
+            font-size: calc(13.5pt * var(--font-scale));
             font-style: italic;
             font-weight: 500;
             color: #444444;
@@ -375,7 +478,7 @@
             max-width: 90%;
         }
 
-        /* Recipient Name Box */
+        /* Recipient Name Box - Clean Split into 2 stacked lines */
         .recipient-name-container {
             width: 90%;
             display: flex;
@@ -385,26 +488,42 @@
         }
 
         .recipient-name {
-            font-family: 'Cinzel', serif;
-            font-size: 26pt;
-            font-weight: 900;
-            color: #004c99;
+            font-family: var(--font-family-title);
+            font-size: var(--font-size-name);
+            font-weight: 800;
+            color: var(--primary-blue);
             letter-spacing: 2px;
             padding: 0.08in 0;
-            display: inline-block;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.25;
             text-shadow: 1px 1px 0px #ffffff, 2px 2px 0px rgba(197, 160, 89, 0.3);
+        }
+
+        .recipient-name span {
+            display: block;
+        }
+
+        .recipient-name-first {
+            font-weight: 700;
+        }
+
+        .recipient-name-last {
+            font-weight: 900;
+            margin-top: 2px;
         }
 
         .recipient-line {
             width: 100%;
             height: 1.5px;
-            background: linear-gradient(to right, transparent, #c5a059, #004c99, #c5a059, transparent);
+            background: linear-gradient(to right, transparent, var(--accent-gold), var(--primary-blue), var(--accent-gold), transparent);
         }
 
         /* Description Body */
         .description-text {
-            font-family: 'EB Garamond', serif;
-            font-size: 11.5pt;
+            font-family: var(--font-family-body);
+            font-size: calc(11.5pt * var(--font-scale));
             color: #1a1a1a;
             line-height: 1.65;
             text-align: justify;
@@ -423,7 +542,7 @@
 
         .quote-box::before, .quote-box::after {
             content: '"';
-            font-family: 'Cinzel', serif;
+            font-family: var(--font-family-title);
             font-size: 36pt;
             color: rgba(197, 160, 89, 0.4);
             position: absolute;
@@ -440,8 +559,8 @@
         }
 
         .quote-text {
-            font-family: 'EB Garamond', serif;
-            font-size: 11pt;
+            font-family: var(--font-family-body);
+            font-size: calc(11pt * var(--font-scale));
             font-style: italic;
             font-weight: 500;
             color: #444444;
@@ -457,8 +576,8 @@
         }
 
         .date-line {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 8.5pt;
+            font-family: var(--font-family-sans);
+            font-size: calc(8.5pt * var(--font-scale));
             font-weight: 600;
             color: #555555;
             letter-spacing: 1px;
@@ -475,21 +594,21 @@
 
         .signature-line {
             width: 70%;
-            border-top: 1.5px solid #c5a059;
+            border-top: 1.5px solid var(--accent-gold);
             margin-bottom: 0.08in;
         }
 
         .signer-name {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 9pt;
+            font-family: var(--font-family-sans);
+            font-size: calc(9pt * var(--font-scale));
             font-weight: 700;
-            color: #004c99;
+            color: var(--primary-blue);
             margin-bottom: 0.03in;
         }
 
         .signer-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 7.5pt;
+            font-family: var(--font-family-sans);
+            font-size: calc(7.5pt * var(--font-scale));
             font-weight: 500;
             color: #666666;
             letter-spacing: 0.5px;
@@ -511,7 +630,6 @@
                 overflow: hidden !important;
             }
 
-            /* Hide Sidebar completely during print */
             .sidebar {
                 display: none !important;
             }
@@ -525,7 +643,6 @@
                 overflow: visible !important;
             }
 
-            /* Force standard layout 100% flat */
             .certificate-page {
                 transform: none !important;
                 box-shadow: none !important;
@@ -547,10 +664,17 @@
         <div class="sidebar">
             <div class="sidebar-header">
                 <h2>Editor de Reconocimientos</h2>
-                <p>Personaliza y previsualiza en tiempo real antes de imprimir.</p>
+                <p>Personaliza textos y diseño antes de imprimir.</p>
             </div>
             
-            <div class="sidebar-content">
+            <!-- Tabs Navigation -->
+            <div class="sidebar-tabs">
+                <button class="tab-btn active" id="btn-tab-text" onclick="switchTab('tab-text')">Texto</button>
+                <button class="tab-btn" id="btn-tab-design" onclick="switchTab('tab-design')">Diseño</button>
+            </div>
+            
+            <!-- TAB 1: TEXT CONTENT -->
+            <div class="sidebar-content tab-content active" id="tab-text">
                 <div class="form-group">
                     <label for="input-institution">Institución Organizadora</label>
                     <input type="text" id="input-institution" value="Asociación Mexicana de Diabetes en el Estado de Guerrero, A.C.">
@@ -571,20 +695,29 @@
                     <textarea id="input-ack-intro">La Asociación Mexicana de Diabetes en el Estado de Guerrero, A.C., expresa su más profundo agradecimiento y reconocimiento a:</textarea>
                 </div>
 
+                <div class="section-divider">Datos del Homenajeado</div>
+
                 <div class="form-group">
-                    <label for="input-recipient">Nombre del Homenajeado</label>
-                    <input type="text" id="input-recipient" value="DON FERMÍN IRIBARREN INDA">
+                    <label for="input-recipient-first">Nombre (Línea 1)</label>
+                    <input type="text" id="input-recipient-first" value="DON FERMÍN">
+                </div>
+                
+                <div class="form-group">
+                    <label for="input-recipient-last">Apellidos (Línea 2)</label>
+                    <input type="text" id="input-recipient-last" value="IRIBARREN INDA">
                 </div>
 
                 <div class="form-group">
                     <label for="input-description">Texto Descriptivo Principal</label>
-                    <textarea id="input-description" style="min-height: 130px;">Por su invaluable generosidad, noble altruismo y permanente compromiso con nuestra institución. Su respaldo trascendental hizo posible la reparación, reconstrucción y fortalecimiento de nuestras instalaciones tras el paso de los huracanes Otis y John, permitiendo que nuestra Asociación continúe brindando atención en salud, educación y esperanza a niñas, niños, adolescentes y adultos que viven con Diabetes.</textarea>
+                    <textarea id="input-description" style="min-height: 120px;">Por su invaluable generosidad, noble altruismo y permanente compromiso con nuestra institución. Su respaldo trascendental hizo posible la reparación, reconstrucción y fortalecimiento de nuestras instalaciones tras el paso de los huracanes Otis y John, permitiendo que nuestra Asociación continúe brindando atención en salud, educación y esperanza a niñas, niños, adolescentes y adultos que viven con Diabetes.</textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="input-quote">Cita o Frase Conmemorativa</label>
                     <textarea id="input-quote">"Su gran humanismo nos devuelve la fe, la esperanza, la fuerza y el compromiso para continuar con esta noble causa. Su obra es ejemplo de verdadera solidaridad."</textarea>
                 </div>
+
+                <div class="section-divider">Firma y Fecha</div>
 
                 <div class="form-group">
                     <label for="input-date">Lugar y Fecha</label>
@@ -600,6 +733,78 @@
                     <label for="input-signer-title">Cargo / Firma</label>
                     <input type="text" id="input-signer-title" value="Asociación Mexicana de Diabetes en el Estado de Guerrero, A.C.">
                 </div>
+            </div>
+            
+            <!-- TAB 2: APPEARANCE & DESIGN -->
+            <div class="sidebar-content tab-content" id="tab-design">
+                
+                <div class="form-group">
+                    <label for="select-color-theme">Tema de Color Principal</label>
+                    <select id="select-color-theme">
+                        <option value="amd">Azul AMD (Institucional) & Oro</option>
+                        <option value="burgundy">Rojo Imperial & Oro</option>
+                        <option value="forest">Verde Esmeralda & Oro</option>
+                        <option value="charcoal">Negro Monárquico & Oro</option>
+                    </select>
+                </div>
+
+                <div class="section-divider">Escalas de Tipografía</div>
+
+                <div class="form-group">
+                    <label for="input-font-scale">Escala de Texto General: <span id="val-font-scale">1.0x</span></label>
+                    <input type="range" id="input-font-scale" min="0.8" max="1.4" step="0.05" value="1.0">
+                </div>
+
+                <div class="form-group">
+                    <label for="input-name-scale">Tamaño Nombre del Homenajeado: <span id="val-name-scale">26pt</span></label>
+                    <input type="range" id="input-name-scale" min="18" max="42" step="1" value="26">
+                </div>
+
+                <div class="section-divider">Tipografía (Fuentes)</div>
+
+                <div class="form-group">
+                    <label for="select-title-font">Fuente para Nombre e Hitos</label>
+                    <select id="select-title-font">
+                        <option value="Cinzel">Cinzel (Clásico / Romano)</option>
+                        <option value="Playfair Display">Playfair Display (Elegante de alto contraste)</option>
+                        <option value="Cormorant Garamond">Cormorant Garamond (Fino / Académico)</option>
+                        <option value="EB Garamond">EB Garamond (Tradicional)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="select-body-font">Fuente para el Cuerpo del Texto</label>
+                    <select id="select-body-font">
+                        <option value="EB Garamond">EB Garamond (Editorial / Muy legible)</option>
+                        <option value="Lora">Lora (Serif Caligrafiado)</option>
+                        <option value="Montserrat">Montserrat (Limpio y Moderno)</option>
+                    </select>
+                </div>
+
+                <div class="section-divider">Bordes y Gráficos</div>
+
+                <div class="form-group">
+                    <label for="select-border-style">Estilo de Marcos</label>
+                    <select id="select-border-style">
+                        <option value="full">Marco Completo (Bordes y Esquinas)</option>
+                        <option value="ornaments">Solo Esquinas Ornamentales</option>
+                        <option value="lines">Solo Líneas de Borde</option>
+                        <option value="none">Sin Marco de CSS</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="input-border-width">Grosor de Línea Principal: <span id="val-border-width">4px</span></label>
+                    <input type="range" id="input-border-width" min="1" max="10" step="1" value="4">
+                </div>
+
+                <div class="form-group" style="margin-top: 20px;">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="toggle-bg-image" checked>
+                        Mostrar fondo de plantilla original
+                    </label>
+                </div>
+
             </div>
             
             <div class="sidebar-footer">
@@ -665,11 +870,12 @@
                         La Asociación Mexicana de Diabetes en el Estado de Guerrero, A.C., expresa su más profundo agradecimiento y reconocimiento a:
                     </div>
 
-                    <!-- Recipient Name -->
+                    <!-- Recipient Name stacked in 2 lines -->
                     <div class="recipient-name-container">
                         <div class="recipient-line"></div>
                         <div class="recipient-name" id="cert-recipient">
-                            DON FERMÍN IRIBARREN INDA
+                            <span id="cert-recipient-name" class="recipient-name-first">DON FERMÍN</span>
+                            <span id="cert-recipient-lastname" class="recipient-name-last">IRIBARREN INDA</span>
                         </div>
                         <div class="recipient-line"></div>
                     </div>
@@ -706,10 +912,27 @@
 
     </div>
 
-    <!-- JS for scale fitting and live inputs binding -->
+    <!-- JS for scale fitting, tabs, and live customizer controls -->
     <script>
         const certPage = document.getElementById('cert-page');
         const previewArea = certPage.parentElement;
+
+        // TAB SWITCHER
+        function switchTab(tabId) {
+            // Remove active classes
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active classes to selected tab
+            if (tabId === 'tab-text') {
+                document.getElementById('btn-tab-text').classList.add('active');
+                document.getElementById('tab-text').classList.add('active');
+            } else {
+                document.getElementById('btn-tab-design').classList.add('active');
+                document.getElementById('tab-design').classList.add('active');
+            }
+            resizePreview();
+        }
 
         // Auto scale to fit the preview panel perfectly
         function resizePreview() {
@@ -731,17 +954,17 @@
         }
 
         window.addEventListener('resize', resizePreview);
-        // Execute resize check immediately and also after images/fonts load
         resizePreview();
         window.addEventListener('load', resizePreview);
 
-        // Bind input fields to preview
-        const inputs = [
+        // Bind Text Inputs to Preview
+        const textBindings = [
             { inputId: 'input-institution', certId: 'cert-institution', transform: null },
             { inputId: 'input-badge1', certId: 'cert-badge1', transform: null },
             { inputId: 'input-badge2', certId: 'cert-badge2', transform: null },
             { inputId: 'input-ack-intro', certId: 'cert-ack-intro', transform: null },
-            { inputId: 'input-recipient', certId: 'cert-recipient', transform: (val) => val.toUpperCase() },
+            { inputId: 'input-recipient-first', certId: 'cert-recipient-name', transform: (val) => val.toUpperCase() },
+            { inputId: 'input-recipient-last', certId: 'cert-recipient-lastname', transform: (val) => val.toUpperCase() },
             { inputId: 'input-description', certId: 'cert-description', transform: null },
             { inputId: 'input-quote', certId: 'cert-quote', transform: null },
             { inputId: 'input-date', certId: 'cert-date', transform: null },
@@ -749,7 +972,7 @@
             { inputId: 'input-signer-title', certId: 'cert-signer-title', transform: null }
         ];
 
-        inputs.forEach(binding => {
+        textBindings.forEach(binding => {
             const inputEl = document.getElementById(binding.inputId);
             const certEl = document.getElementById(binding.certId);
 
@@ -760,10 +983,91 @@
                         val = binding.transform(val);
                     }
                     certEl.innerText = val;
-                    // Trigger scaling recalculation just in case font layouts shift sizes
                     resizePreview();
                 });
             }
+        });
+
+        // DESIGN CONTROLS BINDING
+        
+        // 1. Color Theme Swapper
+        const themeColors = {
+            amd: { primary: '#004c99', gold: '#c5a059' },
+            burgundy: { primary: '#800020', gold: '#d4af37' },
+            forest: { primary: '#134e4a', gold: '#b89047' },
+            charcoal: { primary: '#1a1a1a', gold: '#c5a059' }
+        };
+
+        document.getElementById('select-color-theme').addEventListener('change', (e) => {
+            const colors = themeColors[e.target.value];
+            document.documentElement.style.setProperty('--primary-blue', colors.primary);
+            document.documentElement.style.setProperty('--accent-gold', colors.gold);
+        });
+
+        // 2. General Font Scale
+        const scaleRange = document.getElementById('input-font-scale');
+        const scaleVal = document.getElementById('val-font-scale');
+        scaleRange.addEventListener('input', (e) => {
+            document.documentElement.style.setProperty('--font-scale', e.target.value);
+            scaleVal.innerText = e.target.value + 'x';
+            resizePreview();
+        });
+
+        // 3. Name Font Size
+        const nameScaleRange = document.getElementById('input-name-scale');
+        const nameScaleVal = document.getElementById('val-name-scale');
+        nameScaleRange.addEventListener('input', (e) => {
+            document.documentElement.style.setProperty('--font-size-name', e.target.value + 'pt');
+            nameScaleVal.innerText = e.target.value + 'pt';
+            resizePreview();
+        });
+
+        // 4. Header / Name Font Family
+        document.getElementById('select-title-font').addEventListener('change', (e) => {
+            document.documentElement.style.setProperty('--font-family-title', `'${e.target.value}', serif`);
+            resizePreview();
+        });
+
+        // 5. Body Font Family
+        document.getElementById('select-body-font').addEventListener('change', (e) => {
+            document.documentElement.style.setProperty('--font-family-body', `'${e.target.value}', serif`);
+            resizePreview();
+        });
+
+        // 6. Border Style Swapper
+        document.getElementById('select-border-style').addEventListener('change', (e) => {
+            const style = e.target.value;
+            const borderFrame = document.querySelector('.border-frame');
+            const ornaments = document.querySelectorAll('.corner-ornament');
+            
+            if (style === 'full') {
+                borderFrame.style.display = 'block';
+                ornaments.forEach(o => o.style.display = 'block');
+            } else if (style === 'ornaments') {
+                borderFrame.style.display = 'none';
+                ornaments.forEach(o => o.style.display = 'block');
+            } else if (style === 'lines') {
+                borderFrame.style.display = 'block';
+                ornaments.forEach(o => o.style.display = 'none');
+            } else if (style === 'none') {
+                borderFrame.style.display = 'none';
+                ornaments.forEach(o => o.style.display = 'none');
+            }
+            resizePreview();
+        });
+
+        // 7. Border Width
+        const borderWidthRange = document.getElementById('input-border-width');
+        const borderWidthVal = document.getElementById('val-border-width');
+        borderWidthRange.addEventListener('input', (e) => {
+            document.documentElement.style.setProperty('--border-width', e.target.value + 'px');
+            borderWidthVal.innerText = e.target.value + 'px';
+        });
+
+        // 8. Toggle Template Background Image
+        document.getElementById('toggle-bg-image').addEventListener('change', (e) => {
+            const bgContainer = document.querySelector('.background-container');
+            bgContainer.style.display = e.target.checked ? 'block' : 'none';
         });
     </script>
 </body>
