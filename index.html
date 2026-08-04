@@ -29,7 +29,12 @@
             padding: 0;
         }
 
-        /* Screen Layout Styles */
+        /* Mobile Header Navigation - Hidden on Desktop */
+        .mobile-tabs-header {
+            display: none;
+        }
+
+        /* Screen Layout Styles (Desktop) */
         @media screen {
             body {
                 background-color: #0b132b;
@@ -132,15 +137,6 @@
 
             .form-group {
                 margin-bottom: 16px;
-            }
-
-            .form-group.row {
-                display: flex;
-                gap: 10px;
-            }
-
-            .form-group.row > div {
-                flex: 1;
             }
 
             .form-group label {
@@ -286,6 +282,90 @@
                 box-shadow: 0 15px 35px rgba(0,0,0,0.4);
                 transform-origin: center center;
                 flex-shrink: 0;
+            }
+        }
+
+        /* Mobile View Rules (< 768px) */
+        @media screen and (max-width: 768px) {
+            .mobile-tabs-header {
+                display: flex !important;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 50px;
+                background-color: #0b132b;
+                z-index: 100;
+                border-bottom: 1px solid #3a506b;
+            }
+
+            .mobile-tab-btn {
+                flex: 1;
+                background: none;
+                border: none;
+                color: #8fa0b5;
+                font-family: 'Montserrat', sans-serif;
+                font-weight: 700;
+                font-size: 9.5pt;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                cursor: pointer;
+                text-align: center;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: color 0.2s, background-color 0.2s;
+            }
+
+            .mobile-tab-btn.active {
+                color: #5bc0be;
+                background-color: #1c2541;
+                border-bottom: 3px solid #5bc0be;
+            }
+
+            .app-layout {
+                padding-top: 50px;
+                display: block !important;
+                height: 100vh;
+                position: relative;
+            }
+
+            /* Stack panels absolutely inside view beneath header */
+            .sidebar {
+                width: 100% !important;
+                height: calc(100vh - 50px) !important;
+                position: absolute;
+                top: 0;
+                left: 0;
+                display: none; /* Managed by JS Class */
+                background-color: #1c2541;
+                z-index: 10;
+            }
+
+            .preview-area {
+                width: 100% !important;
+                height: calc(100vh - 50px) !important;
+                position: absolute;
+                top: 0;
+                left: 0;
+                display: none; /* Managed by JS Class */
+                background-color: #3a506b;
+                padding: 10px;
+                z-index: 10;
+            }
+
+            .sidebar.mobile-active, .preview-area.mobile-active {
+                display: flex !important;
+            }
+
+            /* Enlarge fonts to 16px on mobile to prevent browser auto-zooming on focus */
+            .form-group input, .form-group textarea, .form-group select {
+                font-size: 16px !important;
+            }
+
+            .certificate-page {
+                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             }
         }
 
@@ -630,6 +710,10 @@
                 overflow: hidden !important;
             }
 
+            .mobile-tabs-header {
+                display: none !important;
+            }
+
             .sidebar {
                 display: none !important;
             }
@@ -657,6 +741,12 @@
     </style>
 </head>
 <body>
+
+    <!-- Mobile Navigation Tab Bar Header -->
+    <div class="mobile-tabs-header">
+        <button class="mobile-tab-btn active" id="mobile-btn-edit" onclick="switchMobileTab('edit')">Editar</button>
+        <button class="mobile-tab-btn" id="mobile-btn-preview" onclick="switchMobileTab('preview')">Ver Diploma</button>
+    </div>
 
     <div class="app-layout">
         
@@ -917,13 +1007,11 @@
         const certPage = document.getElementById('cert-page');
         const previewArea = certPage.parentElement;
 
-        // TAB SWITCHER
+        // TAB SWITCHER (DESKTOP SIDEBAR)
         function switchTab(tabId) {
-            // Remove active classes
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             
-            // Add active classes to selected tab
             if (tabId === 'tab-text') {
                 document.getElementById('btn-tab-text').classList.add('active');
                 document.getElementById('tab-text').classList.add('active');
@@ -934,15 +1022,34 @@
             resizePreview();
         }
 
+        // MOBILE TAB SWITCHER (RESPONSIVE VIEWPORT)
+        function switchMobileTab(panel) {
+            const sidebar = document.querySelector('.sidebar');
+            const previewArea = document.querySelector('.preview-area');
+            const btnEdit = document.getElementById('mobile-btn-edit');
+            const btnPreview = document.getElementById('mobile-btn-preview');
+
+            if (panel === 'edit') {
+                sidebar.classList.add('mobile-active');
+                previewArea.classList.remove('mobile-active');
+                btnEdit.classList.add('active');
+                btnPreview.classList.remove('active');
+            } else {
+                sidebar.classList.remove('mobile-active');
+                previewArea.classList.add('mobile-active');
+                btnEdit.classList.remove('active');
+                btnPreview.classList.add('active');
+                // Allow layout engine to compute widths before scaling preview
+                setTimeout(resizePreview, 50);
+            }
+        }
+
         // Auto scale to fit the preview panel perfectly
         function resizePreview() {
-            if (window.matchMedia("(max-width: 768px)").matches) {
-                certPage.style.transform = "none";
-                return;
-            }
-
-            const areaWidth = previewArea.clientWidth - 40;
-            const areaHeight = previewArea.clientHeight - 40;
+            const isMobile = window.matchMedia("(max-width: 768px)").matches;
+            
+            const areaWidth = previewArea.clientWidth - (isMobile ? 20 : 40);
+            const areaHeight = previewArea.clientHeight - (isMobile ? 20 : 40);
             const certWidth = 816; // 8.5 inches * 96 DPI
             const certHeight = 1056; // 11 inches * 96 DPI
 
@@ -953,9 +1060,31 @@
             certPage.style.transform = `scale(${scale})`;
         }
 
-        window.addEventListener('resize', resizePreview);
-        resizePreview();
-        window.addEventListener('load', resizePreview);
+        // Initial setup for mobile views
+        function initMobileView() {
+            const sidebar = document.querySelector('.sidebar');
+            const previewArea = document.querySelector('.preview-area');
+            const btnEdit = document.getElementById('mobile-btn-edit');
+            const btnPreview = document.getElementById('mobile-btn-preview');
+
+            if (window.matchMedia("(max-width: 768px)").matches) {
+                sidebar.classList.add('mobile-active');
+                previewArea.classList.remove('mobile-active');
+                btnEdit.classList.add('active');
+                btnPreview.classList.remove('active');
+            } else {
+                sidebar.classList.remove('mobile-active');
+                previewArea.classList.remove('mobile-active');
+            }
+            resizePreview();
+        }
+
+        window.addEventListener('resize', () => {
+            initMobileView();
+        });
+        window.addEventListener('load', () => {
+            initMobileView();
+        });
 
         // Bind Text Inputs to Preview
         const textBindings = [
