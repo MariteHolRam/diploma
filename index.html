@@ -20,6 +20,7 @@
             --font-family-body: 'EB Garamond', serif;
             --font-family-sans: 'Montserrat', sans-serif;
             --border-width: 4px;
+            --logo-height: 0.85in;
         }
 
         /* General Reset */
@@ -488,8 +489,8 @@
         }
 
         .logo {
-            height: 0.85in;
-            max-width: 2.1in;
+            height: var(--logo-height);
+            max-width: 2.5in;
             object-fit: contain;
         }
 
@@ -850,6 +851,11 @@
                     <input type="range" id="input-name-scale" min="18" max="42" step="1" value="26">
                 </div>
 
+                <div class="form-group">
+                    <label for="input-logo-scale">Tamaño de Logotipos: <span id="val-logo-scale">0.85in</span></label>
+                    <input type="range" id="input-logo-scale" min="0.5" max="1.5" step="0.05" value="0.85">
+                </div>
+
                 <div class="section-divider">Tipografía (Fuentes)</div>
 
                 <div class="form-group">
@@ -1148,6 +1154,15 @@
         nameScaleRange.addEventListener('input', (e) => {
             document.documentElement.style.setProperty('--font-size-name', e.target.value + 'pt');
             nameScaleVal.innerText = e.target.value + 'pt';
+            resizePreview();
+        });
+
+        // 3b. Logo Size Control
+        const logoScaleRange = document.getElementById('input-logo-scale');
+        const logoScaleVal = document.getElementById('val-logo-scale');
+        logoScaleRange.addEventListener('input', (e) => {
+            document.documentElement.style.setProperty('--logo-height', e.target.value + 'in');
+            logoScaleVal.innerText = e.target.value + 'in';
             resizePreview();
         });
 
